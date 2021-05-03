@@ -1,13 +1,11 @@
 import numpy as np
 from scipy import linalg
 
-# tri + r + cell jako jeden obiekt?
-
 def gmk_factory(r, cell):
     g_mk = None
     dm = cell.shape.size
     if dm == 2:
-        if np.all(np.isclose(r, r[0])): # equal_radii
+        if np.all(np.isclose(r, r[0])):
             def g_mk(dm, dk, r, cell):
                 r = r[0]
                 delta_mk = cell.distance(dm, dk) - 2*r
@@ -47,16 +45,6 @@ def min_ec(tri, r, cell):
     gs, B = construct_coefficients(tri, r, cell)
     cons = find_minima(gs, B)
     return ec(tri, cons, r, cell)
-
-# def g_mk(dm, dk, r, cell): # r powinno byc zawsze para wartosci ale moze byc r1=r2
-#     delta_mk = cell.distance(dm, dk) - 2*r # -(r1+r2)
-#     if len(cell.shape) == 2:
-#         return np.pi * np.sqrt(r/delta_mk)
-#     if len(cell.shape) == 3:
-#         return -np.pi * r * np.log(delta_mk)
-    
-#     return (np.pi/np.sqrt(delta_mk)) * np.sqrt(2*rk*rm/rk+rm)
-#     return None
 
 def construct_coefficients(tri, r, cell):
     base_n = 3**(cell.shape.size)
